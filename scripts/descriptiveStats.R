@@ -111,3 +111,20 @@ ggarrange(n_plot,
           labels = "A"
           )
 dev.off()
+
+################## Resilience correlation table ##################
+
+res_df <- full_df[full_df$ACE_2 %in% c(0,1) & full_df$ACE_3 %in% c(0,1) &
+  full_df$ACE_5 %in% c(0,1) & full_df$ACE_7 %in% c(0,1),
+  c("randomID", grep("sr_", names(full_df), value=TRUE),
+  paste0("er_", 1:5), grep("pr_", names(full_df), value=TRUE),
+  paste0("nr_", 1:5), paste0("nsc_", 1:4), paste0("ACE_", 1:10))]
+row.names(res_df) <- 1:nrow(res_df)
+
+corr_res <- round(cor(res_df[,!(names(res_df) %in% "randomID")]), digits=4)
+
+corr_res_plot <- ggcorrplot(corr_res)
+
+pdf(file="~/Documents/traumaCOVID/plots/aceRes.pdf", width=10, height=8)
+corr_res_plot
+dev.off()
