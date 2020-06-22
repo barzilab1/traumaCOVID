@@ -1,7 +1,7 @@
 ### Hypothesized models, with Null Model containing demographics
 ###
 ### Ellyn Butler
-### June 20, 2020
+### June 20, 2020 - June 22, 2020
 
 # Load libraries
 library('ggplot2')
@@ -26,6 +26,14 @@ full_df$Job_Reduced <- recode(full_df$exp_job_reduce, "Yes"=1, "No"=0)
 full_df$COVID_Test <- recode(full_df$exp_test, "Yes"=1, "No"=0)
 full_df$ACE_4Plus <- recode(full_df$ACE_sum, `0`=0, `1`=0, `2`=0, `3`=0, `4`=1,
   `5`=1, `6`=1, `7`=1, `8`=1, `9`=1, `10`=1)
+
+# Scale variables (mean 0, variance 1)
+full_df$Overall_Anxious_Misery <- scale(full_df$Overall_Anxious_Misery)
+full_df$Self_Reliance <- scale(full_df$Self_Reliance)
+full_df$Emotion_Dysregulation <- scale(full_df$Emotion_Dysregulation)
+full_df$Positive_Relationships <- scale(full_df$Positive_Relationships)
+full_df$Negative_Relationships <- scale(full_df$Negative_Relationships)
+full_df$Neighborhood_Fears <- scale(full_df$Neighborhood_Fears)
 
 # Null model
 mod0 <- lm(Overall_Anxious_Misery ~ Age + Female + White + Finished_College + Health,
@@ -54,8 +62,7 @@ comp_mod2_mod3 <- anova(mod2, mod3)
 mod4 <- lm(Overall_Anxious_Misery ~ Age + Female + White + Finished_College + Health +
   ACE_4Plus + Job_Reduced + COVID_Test + Self_Reliance + Emotion_Dysregulation +
   Positive_Relationships + Negative_Relationships + Neighborhood_Fears +
-  Threat:Emotion_Dysregulation + Deprivation:Emotion_Dysregulation +
-  Instability:Emotion_Dysregulation, data=full_df)
+  ACE_4Plus:Emotion_Dysregulation, data=full_df)
 
 comp_mod3_mod4 <- anova(mod3, mod4)
 

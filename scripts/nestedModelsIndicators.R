@@ -25,6 +25,13 @@ full_df$Instability <- recode(full_df$exp_undepend, "Yes"=1, "No"=0)
 full_df$Job_Reduced <- recode(full_df$exp_job_reduce, "Yes"=1, "No"=0)
 full_df$COVID_Test <- recode(full_df$exp_test, "Yes"=1, "No"=0)
 
+# Scale variables (mean 0, variance 1)
+full_df$Overall_Anxious_Misery <- scale(full_df$Overall_Anxious_Misery)
+full_df$Self_Reliance <- scale(full_df$Self_Reliance)
+full_df$Emotion_Dysregulation <- scale(full_df$Emotion_Dysregulation)
+full_df$Positive_Relationships <- scale(full_df$Positive_Relationships)
+full_df$Negative_Relationships <- scale(full_df$Negative_Relationships)
+full_df$Neighborhood_Fears <- scale(full_df$Neighborhood_Fears)
 
 # Adversity model
 mod1 <- lm(Overall_Anxious_Misery ~ Threat + Deprivation + Instability, data=full_df)
