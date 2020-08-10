@@ -9,13 +9,14 @@ library('gridExtra')
 library('dplyr')
 library('gt')
 library('sjPlot')
+library('knitr')
 
 
 # Load data
-full_df <- read.csv("~/Documents/traumaCOVID/data/cleandata_2020-05-31.csv")
+full_df <- read.csv("~/Documents/traumaCOVID/data/cleandata_2020-08-07.csv")
 full_df$Finished_College <- recode(full_df$edu, "LessThanHS"=0, "HS"=0,
   "SomeCollege"=0, "College"=1, "Masters"=1, "Doctorate"=1)
-full_df$White <- recode(full_df$race, `5`=1, .default=0)
+names(full_df)[names(full_df) == "race_white"] <- "White"
 full_df$Female <- recode(full_df$sex, "Female"=1, "Male"=0)
 full_df$Health <- recode(full_df$occu_health, "Yes"=1, "No"=0)
 names(full_df)[names(full_df) == "age"] <- "Age"
@@ -35,8 +36,6 @@ full_df$Neighborhood_Fears <- scale(full_df$Neighborhood_Fears)
 
 # Adversity model
 mod1 <- lm(Overall_Anxious_Misery ~ Threat + Deprivation + Instability, data=full_df)
-
-comp_mod0_mod1 <- anova(mod0, mod1)
 
 # Recent Stressors model
 mod2 <- lm(Overall_Anxious_Misery ~ Threat + Deprivation + Instability + Job_Reduced +
@@ -61,4 +60,8 @@ mod4 <- lm(Overall_Anxious_Misery ~ Threat + Deprivation + Instability +
 comp_mod3_mod4 <- anova(mod3, mod4)
 
 
-tab_model(mod1, mod2, mod3, mod4)
+all_models <- tab_model(mod1, mod2, mod3, mod4)
+
+write.csv(all_models, file="~/Documents/traumaCOVID/tables/nestedModelsIndicators.csv")
+
+knitr::pandoc(all_models, format="docx")

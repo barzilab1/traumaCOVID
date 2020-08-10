@@ -12,10 +12,10 @@ library('sjPlot')
 
 
 # Load data
-full_df <- read.csv("~/Documents/traumaCOVID/data/cleandata_2020-05-31.csv")
+full_df <- read.csv("~/Documents/traumaCOVID/data/cleandata_2020-08-07.csv")
 full_df$Finished_College <- recode(full_df$edu, "LessThanHS"=0, "HS"=0,
   "SomeCollege"=0, "College"=1, "Masters"=1, "Doctorate"=1)
-full_df$White <- recode(full_df$race, `5`=1, .default=0)
+names(full_df)[names(full_df) == "race_white"] <- "White"
 full_df$Female <- recode(full_df$sex, "Female"=1, "Male"=0)
 full_df$Health <- recode(full_df$occu_health, "Yes"=1, "No"=0)
 names(full_df)[names(full_df) == "age"] <- "Age"
