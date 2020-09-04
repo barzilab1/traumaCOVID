@@ -68,4 +68,6 @@ mod4 <- lm(Overall_Anxious_Misery ~ Age + Female + White + Finished_College + He
 
 comp_mod3_mod4 <- anova(mod3, mod4)
 
-tab_model(mod0, mod1, mod2, mod3, mod4)
+mod_table <- tab_model(mod0, mod1, mod2, mod3, mod4)
+#page.complete
+#http://www.sussex.ac.uk/its/help/faq?faqid=630
