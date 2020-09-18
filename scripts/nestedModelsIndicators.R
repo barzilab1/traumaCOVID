@@ -13,7 +13,7 @@ library('knitr')
 
 
 # Load data
-full_df <- read.csv("~/Documents/traumaCOVID/data/cleandata_2020-08-07.csv")
+full_df <- read.csv("~/Documents/traumaCOVID/data/cleandata_2020-09-17.csv")
 full_df$Finished_College <- recode(full_df$edu, "LessThanHS"=0, "HS"=0,
   "SomeCollege"=0, "College"=1, "Masters"=1, "Doctorate"=1)
 names(full_df)[names(full_df) == "race_white"] <- "White"
@@ -27,35 +27,35 @@ full_df$Job_Reduced <- recode(full_df$exp_job_reduce, "Yes"=1, "No"=0)
 full_df$COVID_Test <- recode(full_df$exp_test, "Yes"=1, "No"=0)
 
 # Scale variables (mean 0, variance 1)
-full_df$Overall_Anxious_Misery <- scale(full_df$Overall_Anxious_Misery)
+full_df$Internalizing_Symptom_Load <- scale(full_df$Overall_Anxious_Misery)
 full_df$Self_Reliance <- scale(full_df$Self_Reliance)
-full_df$Emotion_Dysregulation <- scale(full_df$Emotion_Dysregulation)
-full_df$Positive_Relationships <- scale(full_df$Positive_Relationships)
-full_df$Negative_Relationships <- scale(full_df$Negative_Relationships)
-full_df$Neighborhood_Fears <- scale(full_df$Neighborhood_Fears)
+full_df$Emotion_Regulation <- scale(full_df$Emotion_Regulation)
+full_df$Confidence_in_Relationship <- scale(full_df$Confidence_in_Relationship)
+full_df$Harmony_in_Relationship <- scale(full_df$Harmony_in_Relationship)
+full_df$Positive_Neighborhood <- scale(full_df$Positive_Neighborhood)
 
 # Adversity model
-mod1 <- lm(Overall_Anxious_Misery ~ Threat + Deprivation + Instability, data=full_df)
+mod1 <- lm(Internalizing_Symptom_Load ~ Threat + Deprivation + Instability, data=full_df)
 
 # Recent Stressors model
-mod2 <- lm(Overall_Anxious_Misery ~ Threat + Deprivation + Instability + Job_Reduced +
+mod2 <- lm(Internalizing_Symptom_Load ~ Threat + Deprivation + Instability + Job_Reduced +
   COVID_Test, data=full_df)
 
 comp_mod1_mod2 <- anova(mod1, mod2)
 
 # Resilience model
-mod3 <- lm(Overall_Anxious_Misery ~ Threat + Deprivation + Instability + Job_Reduced  +
-  COVID_Test + Self_Reliance + Emotion_Dysregulation + Positive_Relationships +
-  Negative_Relationships + Neighborhood_Fears, data=full_df)
+mod3 <- lm(Internalizing_Symptom_Load ~ Threat + Deprivation + Instability + Job_Reduced  +
+  COVID_Test + Self_Reliance + Emotion_Regulation + Confidence_in_Relationship +
+  Harmony_in_Relationship + Positive_Neighborhood, data=full_df)
 
 comp_mod2_mod3 <- anova(mod2, mod3)
 
 # Interaction model
-mod4 <- lm(Overall_Anxious_Misery ~ Threat + Deprivation + Instability +
-  Job_Reduced  + COVID_Test + Self_Reliance + Emotion_Dysregulation +
-  Positive_Relationships + Negative_Relationships + Neighborhood_Fears +
-  Threat:Emotion_Dysregulation + Deprivation:Emotion_Dysregulation +
-  Instability:Emotion_Dysregulation, data=full_df)
+mod4 <- lm(Internalizing_Symptom_Load ~ Threat + Deprivation + Instability +
+  Job_Reduced  + COVID_Test + Self_Reliance + Emotion_Regulation +
+  Confidence_in_Relationship + Harmony_in_Relationship + Positive_Neighborhood +
+  Threat:Emotion_Regulation + Deprivation:Emotion_Regulation +
+  Instability:Emotion_Regulation, data=full_df)
 
 comp_mod3_mod4 <- anova(mod3, mod4)
 

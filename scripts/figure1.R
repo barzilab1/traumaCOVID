@@ -32,7 +32,7 @@ panel_a <- ggplot(ace_df, aes(x=ACEs, y=IntMean, fill=IntMean)) + theme_linedraw
     'ACE_3'='3: Sexual', 'ACE_4'='4: No love', 'ACE_5'='5: Neglect',
     'ACE_6'='6: Divorce', 'ACE_7'='7: Witness', 'ACE_8'='8: Substances',
     'ACE_9'='9: Mental illness', 'ACE_10'='10: Prison')) +
-  labs(title='Anxious Misery by Adverse Childhood Experiences', y='Anxious Misery (95% CI)') +
+  labs(title='Internalizing Symptom Load by Adverse Childhood Experiences', y='Internalizing Symptom Load (95% CI)') +
   theme(legend.position='none', axis.text.x = element_text(angle = 45, hjust = 1, size=12),
     axis.text.y=element_text(size=12), axis.title=element_text(size=14))
 
@@ -42,7 +42,7 @@ panel_a <- ggplot(ace_df, aes(x=ACEs, y=IntMean, fill=IntMean)) + theme_linedraw
 panel_b <- ggplot(full_df, aes(x=age, y=Overall_Anxious_Misery, colour=exp_job_reduce)) +
   theme_linedraw() + geom_smooth(method = "lm", fill = NA) + geom_point(alpha=.2) +
   scale_color_manual(values=c('plum2', 'red')) + theme(legend.position='top') +
-  labs(title='Age by Anxious Misery', x='Age', y='Anxious Misery', colour='Job hours reduced')
+  labs(title='Age by Internalizing Symptom Load', x='Age', y='Internalizing Symptom Load', colour='Job hours reduced')
 
 
 ##################### Panel C #####################
@@ -87,14 +87,14 @@ full_df$ACE_sum_4 <- rowSums(full_df[, paste0('ACE_sum_', 5:10)])
 intmeans <- sapply(paste0('ACE_sum_', 0:4), meanInt)
 intses <- sapply(paste0('ACE_sum_', 0:4), ses2Int)
 ace2_df <- data.frame(ACEs=ordered(paste0('ACE_sum_', 0:4)), IntMean=intmeans, IntSE2=intses)
-ace2_df$ACEs <- ordered(ace_df$ACEs, paste0('ACE_sum_', 0:4))
+#ace2_df$ACEs <- ordered(ace_df$ACEs, paste0('ACE_sum_', 0:4))
 
 panel_a1 <- ggplot(ace2_df, aes(x=ACEs, y=IntMean, fill=IntMean)) + theme_linedraw() +
   geom_bar(stat='identity') + scale_fill_gradient(low='yellow', high='red') +
   geom_errorbar(aes(ymin=IntMean-IntSE2, ymax=IntMean+IntSE2), width=.1) +
   scale_x_discrete(labels=c('ACE_sum_0'='0', 'ACE_sum_1'='1', 'ACE_sum_2'='2',
     'ACE_sum_3'='3', 'ACE_sum_4'='4+')) +
-  labs(title='Anxious Misery by Number of Types of ACEs', y='Anxious Misery (95% CI)') +
+  labs(title='Internalizing Symptom Load by Number of Types of ACEs', y='Internalizing Symptom Load (95% CI)') +
   theme(legend.position='none', axis.text.x = element_text(size=12),
     axis.text.y=element_text(size=12), axis.title=element_text(size=14))
 
@@ -114,7 +114,7 @@ panel_a2 <- ggplot(ace3_df, aes(x=ACEs, y=IntMean, fill=IntMean)) + theme_linedr
   geom_errorbar(aes(ymin=IntMean-IntSE2, ymax=IntMean+IntSE2), width=.1) +
   scale_x_discrete(labels=c('exp_threat'='Threat', 'exp_deprivation'='Deprivation',
     'exp_undepend'='Instability')) +
-  labs(title='Anxious Misery by Types of ACEs', y='Anxious Misery (95% CI)') +
+  labs(title='Internalizing Symptom Load by Types of ACEs', y='Internalizing Symptom Load (95% CI)') +
   theme(legend.position='none', axis.text.x = element_text(size=12),
     axis.text.y=element_text(size=12), axis.title=element_text(size=14))
 
