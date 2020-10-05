@@ -1,7 +1,7 @@
 ### Hypothesized models, with Null Model containing demographics
 ###
 ### Ellyn Butler
-### June 20, 2020 - June 22, 2020
+### June 20, 2020 - October 4, 2020
 
 # Load libraries
 library('ggplot2')
@@ -32,7 +32,7 @@ full_df$Internalizing_Symptom_Load <- scale(full_df$Overall_Anxious_Misery)
 full_df$Self_Reliance <- scale(full_df$Self_Reliance)
 full_df$Emotion_Regulation <- scale(full_df$Emotion_Regulation)
 full_df$Confidence_in_Relationship <- scale(full_df$Confidence_in_Relationship)
-full_df$$Harmony_in_Relationship <- scale(full_df$$Harmony_in_Relationship)
+full_df$Harmony_in_Relationship <- scale(full_df$Harmony_in_Relationship)
 full_df$Positive_Neighborhood <- scale(full_df$Positive_Neighborhood)
 
 # Null model
@@ -54,17 +54,17 @@ comp_mod1_mod2 <- anova(mod1, mod2)
 # Resilience model
 mod3 <- lm(Internalizing_Symptom_Load ~ Age + Female + White + Finished_College + Health +
   ACE_4Plus + Job_Reduced + COVID_Test + Self_Reliance + Emotion_Regulation +
-  Confidence_in_Relationship + $Harmony_in_Relationship + Positive_Neighborhood, data=full_df)
+  Confidence_in_Relationship + Harmony_in_Relationship + Positive_Neighborhood, data=full_df)
 
 comp_mod2_mod3 <- anova(mod2, mod3)
 
 # Interaction model
 mod4 <- lm(Internalizing_Symptom_Load ~ Age + Female + White + Finished_College + Health +
   ACE_4Plus + Job_Reduced + COVID_Test + Self_Reliance + Emotion_Regulation +
-  Confidence_in_Relationship + $Harmony_in_Relationship + Positive_Neighborhood +
+  Confidence_in_Relationship + Harmony_in_Relationship + Positive_Neighborhood +
   ACE_4Plus:Emotion_Regulation, data=full_df)
 
 comp_mod3_mod4 <- anova(mod3, mod4)
 
 
-tab_model(mod0, mod1, mod2, mod3, mod4)
+tab_model(mod0, mod1, mod2, mod3, mod4, file='~/Documents/traumaCOVID/tables/nestedModelsACE4PlusSensitivity.doc')

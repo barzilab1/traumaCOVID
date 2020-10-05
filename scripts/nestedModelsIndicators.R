@@ -1,7 +1,7 @@
 ### Hypothesized models, with Null Model containing demographics
 ###
 ### Ellyn Butler
-### June 16, 2020
+### June 16, 2020 - October 4, 2020
 
 # Load libraries
 library('ggplot2')
@@ -13,26 +13,25 @@ library('knitr')
 
 
 # Load data
-full_df <- read.csv("~/Documents/traumaCOVID/data/cleandata_2020-09-17.csv")
-full_df$Finished_College <- recode(full_df$edu, "LessThanHS"=0, "HS"=0,
-  "SomeCollege"=0, "College"=1, "Masters"=1, "Doctorate"=1)
-names(full_df)[names(full_df) == "race_white"] <- "White"
-full_df$Female <- recode(full_df$sex, "Female"=1, "Male"=0)
-full_df$Health <- recode(full_df$occu_health, "Yes"=1, "No"=0)
-names(full_df)[names(full_df) == "age"] <- "Age"
-full_df$Threat <- recode(full_df$exp_threat, "Yes"=1, "No"=0)
-full_df$Deprivation <- recode(full_df$exp_deprivation, "Yes"=1, "No"=0)
-full_df$Instability <- recode(full_df$exp_undepend, "Yes"=1, "No"=0)
-full_df$Job_Reduced <- recode(full_df$exp_job_reduce, "Yes"=1, "No"=0)
-full_df$COVID_Test <- recode(full_df$exp_test, "Yes"=1, "No"=0)
+full_df <- read.csv('~/Documents/traumaCOVID/data/cleandata_2020-09-17.csv')
+full_df$Finished_College <- recode(full_df$edu, 'LessThanHS'=0, 'HS'=0,
+  'SomeCollege'=0, 'College'=1, 'Masters'=1, 'Doctorate'=1)
+names(full_df)[names(full_df) == 'race_white'] <- 'White'
+full_df$Female <- recode(full_df$sex, 'Female'=1, 'Male'=0)
+full_df$Health <- recode(full_df$occu_health, 'Yes'=1, 'No'=0)
+names(full_df)[names(full_df) == 'age'] <- 'Age'
+full_df$Threat <- recode(full_df$exp_threat, 'Yes'=1, 'No'=0)
+full_df$Deprivation <- recode(full_df$exp_deprivation, 'Yes'=1, 'No'=0)
+full_df$Instability <- recode(full_df$exp_undepend, 'Yes'=1, 'No'=0)
+full_df$Job_Reduced <- recode(full_df$exp_job_reduce, 'Yes'=1, 'No'=0)
+full_df$COVID_Test <- recode(full_df$exp_test, 'Yes'=1, 'No'=0)
 
 # Scale variables (mean 0, variance 1)
-full_df$Internalizing_Symptom_Load <- scale(full_df$Overall_Anxious_Misery)
-full_df$Self_Reliance <- scale(full_df$Self_Reliance)
-full_df$Emotion_Regulation <- scale(full_df$Emotion_Regulation)
-full_df$Confidence_in_Relationship <- scale(full_df$Confidence_in_Relationship)
-full_df$Harmony_in_Relationship <- scale(full_df$Harmony_in_Relationship)
-full_df$Positive_Neighborhood <- scale(full_df$Positive_Neighborhood)
+resilience <- c('Self_Reliance', 'Emotion_Regulation', 'Confidence_in_Relationship',
+  'Harmony_in_Relationship', 'Positive_Neighborhood')
+full_df[,c('Overall_Anxious_Misery', resilience)] <-
+  sapply(full_df[,c('Overall_Anxious_Misery', resilience)], scale)
+full_df$Internalizing_Symptom_Load <- full_df$Overall_Anxious_Misery
 
 # Adversity model
 mod1 <- lm(Internalizing_Symptom_Load ~ Threat + Deprivation + Instability, data=full_df)
@@ -60,8 +59,8 @@ mod4 <- lm(Internalizing_Symptom_Load ~ Threat + Deprivation + Instability +
 comp_mod3_mod4 <- anova(mod3, mod4)
 
 
-all_models <- tab_model(mod1, mod2, mod3, mod4)
+tab_model(mod1, mod2, mod3, mod4, file='~/Documents/traumaCOVID/tables/nestedModelsIndicators.doc')
 
-write.csv(all_models, file="~/Documents/traumaCOVID/tables/nestedModelsIndicators.csv")
+write.csv(all_models, file='~/Documents/traumaCOVID/tables/nestedModelsIndicators.csv')
 
-knitr::pandoc(all_models, format="docx")
+knitr::pandoc(all_models, format='html')

@@ -1,7 +1,7 @@
 ### Hypothesized models, with Null Model containing demographics
 ###
 ### Ellyn Butler
-### June 16, 2020
+### June 16, 2020 - October 4, 2020
 
 # Load libraries
 library('ggplot2')
@@ -12,7 +12,7 @@ library('sjPlot')
 
 
 # Load data
-full_df <- read.csv('~/Documents/traumaCOVID/data/cleandata_2020-08-07.csv')
+full_df <- read.csv('~/Documents/traumaCOVID/data/cleandata_2020-09-17.csv')
 full_df$Finished_College <- recode(full_df$edu, 'LessThanHS'=0, 'HS'=0,
   'SomeCollege'=0, 'College'=1, 'Masters'=1, 'Doctorate'=1)
 names(full_df)[names(full_df) == 'race_white'] <- 'White'
@@ -68,6 +68,6 @@ mod4 <- lm(Internalizing_Symptom_Load ~ Age + Female + White + Finished_College 
 
 comp_mod3_mod4 <- anova(mod3, mod4)
 
-mod_table <- tab_model(mod0, mod1, mod2, mod3, mod4)
+tab_model(mod0, mod1, mod2, mod3, mod4, file='~/Documents/traumaCOVID/tables/nestedModelsIndicatorsSensitivity.doc')
 #page.complete
 #http://www.sussex.ac.uk/its/help/faq?faqid=630

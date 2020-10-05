@@ -66,4 +66,4 @@ mod4 <- lm(Internalizing_Symptom_Load ~ Age + Female + White + Finished_College 
 comp_mod3_mod4 <- anova(mod3, mod4)
 
 
-tab_model(mod0, mod1, mod2, mod3, mod4)
+tab_model(mod0, mod1, mod2, mod3, mod4, file='~/Documents/traumaCOVID/tables/nestedModelsACESumSensitivity.doc')
